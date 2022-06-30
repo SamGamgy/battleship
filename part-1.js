@@ -22,15 +22,27 @@ function random(gridSize) {
     return Math.floor(Math.random()* gridSize);
 }
 
+function randomGridLocation(){
+    let letter = random(3)
+
+    if (letter === 2) {letter = 'C'}
+    else if (letter === 1) {letter = 'B'}
+    else if (letter === 0) {letter = 'A'}
+
+    return (letter + (random(3) + 1));
+    
+}
+
 // places ships randomly in arrays
 function placeShips () {
     removeReplace(nestedArray[random(3)], (random(3)), shipOne);
     removeReplace(nestedArray[random(3)], (random(3)), shipTwo);
 }
 
-
+// initiate game
 operation = rs.question('Press any key to start the game.');
 
+console.log(randomGridLocation());
 placeShips();
 
 
