@@ -22,7 +22,7 @@ function random(gridSize) {
     return Math.floor(Math.random()* gridSize);
 }
 
-function randomGridLocation(){
+function randomGridCoord() {
     let letter = random(3)
 
     if (letter === 2) {letter = 'C'}
@@ -35,24 +35,27 @@ function randomGridLocation(){
 
 // places ships randomly in arrays
 function placeShips () {
-    removeReplace(nestedArray[random(3)], (random(3)), shipOne);
-    removeReplace(nestedArray[random(3)], (random(3)), shipTwo);
+    const shipOneCoord = randomGridCoord();
+    let shipTwoCoord = randomGridCoord();
+
+    if (shipTwoCoord === shipOneCoord) {
+        shipTwoCoord = randomGridCoord();
+    };
+
+
+    console.log('\n*Hidden* Ship 1 : '+ shipOneCoord);
+    console.log('*Hidden* Ship 2 : '+ shipTwoCoord + '\n');
 }
 
 // initiate game
 operation = rs.question('Press any key to start the game.');
 
-console.log(randomGridLocation());
 placeShips();
-
 
 console.log(arrayA);
 console.log(arrayB);
 console.log(arrayC);
 
-
-
-
-rs.question('Enter a location to strike. ie "A2"...');
+// rs.question( '\n Enter a location to strike. ie "A2"...');
 
 
