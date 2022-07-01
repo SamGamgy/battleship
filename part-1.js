@@ -16,9 +16,11 @@ let shipTwoCoord = '';
 
 let guess='';
 
+let playAgain = false;
+
 guessType = nestedArray;
 
-const guessArray=[];
+let guessArray=[];
 
 // USE for in PART 3 GUI
 // function removeReplace (array, index, newVar) {
@@ -42,7 +44,7 @@ function randomGridCoord() {
     
 }
 
-// places ships randomly in arrays & checks for overlap
+// assign ships random coordinates
 function placeShips () {
     shipOneCoord = randomGridCoord();
     shipTwoCoord = randomGridCoord();
@@ -50,17 +52,14 @@ function placeShips () {
     while (shipTwoCoord === shipOneCoord) {
         shipTwoCoord = randomGridCoord();
     };
-
-// This will be hidden to the player
-    console.log('\n*HIDE* Ship 1 : '+ shipOneCoord);
-    console.log('*HIDE* Ship 2 : '+ shipTwoCoord + '\n');
 }
+// // This will be hidden to the player
+//     console.log('\n*HIDE* Ship 1 : '+ shipOneCoord);
+//     console.log('*HIDE* Ship 2 : '+ shipTwoCoord + '\n');
+// }
 
-
-
+// guess response generator
 function checkGuess (guess) {
-   
-
     if (guessArray.includes(shipOneCoord)  && guess === shipTwoCoord) {
         console.log('You have destroyed all battleships!')
     }
@@ -78,6 +77,7 @@ function checkGuess (guess) {
 
 
 // initiate game
+function startGame () {
 rs.question('Press any key to start the game.');
 
 placeShips();
@@ -85,8 +85,6 @@ placeShips();
 console.log(arrayA);
 console.log(arrayB);
 console.log(arrayC);
-
-
 
 while (!(guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord))) {
 
@@ -98,11 +96,18 @@ checkGuess(guess);
         
 guessArray.push(guess);
 
-console.log('Your Strikes:' + guessArray);}
+console.log('Your Strikes:' + guessArray);
 
+}
 
-if (guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord)) 
-{rs.keyInYN('Would you like to play again? Y/N')}
+// if (guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord)) 
+playAgain = rs.keyInYN('Would you like to play again? Y/N')
 
+if (playAgain) {
+    guessArray=[];
+    startGame()};
+}
+
+startGame();
 
 
