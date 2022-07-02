@@ -49,7 +49,7 @@ function translateCoord (coord) {
     return (i,j);
 }
 // assign ships random coordinates
-function placeShipLength2 () {
+function placeShips (length) {
     // randomly select direction. 1=horizontal 2=vertical
     let direction=random(2);
     console.log(direction);
@@ -57,34 +57,35 @@ function placeShipLength2 () {
     if (direction === 1) {
 
     // generate random horizontal start coord (excludes last column)
-    let i= random(10)-1;
-    let j= random(9)-1;
+    let x= random(10)-1;
+    let y= random(11 - length)-1;
     
     // horizontal placing
-    removeReplaceH(i,j, 'S2', 'S2');
+    for(i=0; i < length; i++){
+    removeReplace(x,(y+i), ('S' + length));
+    }
     }
     else if (direction === 2) {
     // generate random vertical start coord (excludes last row)
-    let i= random(9)-1;
-    let j= random(10)-1;
+    let x= random(11 - length)-1;
+    let y= random(10)-1;
 
     // vertical placement
-    removeReplaceV(i,j, 'S2');
-    removeReplaceV((i+1),j, 'S2');
+    for(i=0; i < length; i++){
+    removeReplace((x+i),y, 'S'+ length);
+    }
     };
 //     while (shipTwoCoord === shipOneCoord) {
 //         shipTwoCoord = randomGridCoord();
 //     };
 };
 
-function removeReplaceH (i, j, ...newVar) {
-    grid[i].splice(j, 2, newVar);
-}
-function removeReplaceV (i, j, ...newVar) {
+// Replace Function
+function removeReplace (i, j, ...newVar) {
     grid[i].splice(j, 1, newVar);
 }
 
-// guess response generator
+// Guess response generator
 function checkGuess (guess) {
     if (guessArray.includes(shipOneCoord)  && guess === shipTwoCoord) {
         console.log('You have destroyed all battleships!')
@@ -105,7 +106,7 @@ function checkGuess (guess) {
 
 buildGrid(10);
 
-placeShipLength2();
+placeShips(5);
 
 console.log(`
     ${grid[0]}
@@ -158,5 +159,3 @@ console.log(`
 
 // // initiate game
 // startGame();
-
-
