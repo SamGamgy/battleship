@@ -53,10 +53,6 @@ function placeShips () {
         shipTwoCoord = randomGridCoord();
     };
 }
-// // This will be hidden to the player
-//     console.log('\n*HIDE* Ship 1 : '+ shipOneCoord);
-//     console.log('*HIDE* Ship 2 : '+ shipTwoCoord + '\n');
-// }
 
 // guess response generator
 function checkGuess (guess) {
@@ -76,7 +72,7 @@ function checkGuess (guess) {
 }
 
 
-// initiate game
+// initiate game function
 function startGame () {
 rs.question('Press any key to start the game.');
 
@@ -91,23 +87,25 @@ while (!(guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord))
 guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: guessType,
         limitMessage:'That is not a valid location. Please try again.'});
 
-        
+// Check guess for hit and log message 
 checkGuess(guess);
-        
+// Log Guess
 guessArray.push(guess);
-
+// Show Guess History
 console.log('Your Strikes:' + guessArray);
 
 }
-
-// if (guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord)) 
+// Ending Question
 playAgain = rs.keyInYN('Would you like to play again? Y/N')
 
 if (playAgain) {
+    // Clear guessArray
     guessArray=[];
+    // Restart
     startGame()};
 }
 
+// initiate game
 startGame();
 
 
