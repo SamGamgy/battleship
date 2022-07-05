@@ -4,14 +4,15 @@ var rs = require('readline-sync');
 
 const grid = [];
 
-
-const shipOne = 'S1';
-const shipTwo = 'S2';
+const shipArray = [];
 
 let shipOneCoord = '';
 let shipTwoCoord = '';
 
 let guess='';
+
+let x ='';
+let y ='';
 
 let playAgain = false;
 
@@ -28,6 +29,7 @@ function buildGrid (size) {
         }
     }
 }
+
 // Convert Num to Alphabet
 function numToABC (num) {
     let char= String.fromCharCode(num + 65);
@@ -41,49 +43,80 @@ function random(maxNum) {
 
 
 // generates random coords in specified gridSize
-function randomGridCoord(gridSize) {
-    return (numToABC(random(gridSize)-1) + (random(gridSize)));
+// function randomGridCoord(gridSize) {
+//     return (numToABC(random(gridSize)-1) + (random(gridSize)));
+// }
+
+// function translateCoord (coord) {
+//     return (i,j);
+// }
+
+
+function checkOverlapH (length) {
+    genHoriCoord(length);
+    for(let i=0; i < length; i++) {
+        let yi= y+i;
+        if (grid[x][yi].includes('SH')) {
+            console.log('x=' + x);
+            console.log('y=' + y);
+            checkOverlapH(length);
+    }
+}};
+
+
+function checkOverlapV (length) {
+    genVertCoord(length);
+    for(let i=0; i < length; i++) {
+        let xi= x+i;
+        if (grid[(xi)][y].includes('SH')) {
+            console.log('x=' + x);
+            console.log('y=' + y);
+            checkOverlapV(length);
+    }
+}};
+
+// generate random starting coord -- VERTICAL
+function genVertCoord (length) {
+    x= random(11 - length)-1;
+    y= random(10)-1;
 }
 
-function translateCoord (coord) {
-    return (i,j);
+// generate random starting coord -- HORIZONTAL
+function genHoriCoord (length) {
+    x= random(10)-1;
+    y= random(11 - length)-1;
 }
-// assign ships random coordinates
-function placeShips (length) {
-    // randomly select direction. 1=horizontal 2=vertical
-    let direction=random(2);
-    console.log(direction);
 
-    if (direction === 1) {
-
-    // generate random horizontal start coord (excludes last column)
-    let x= random(10)-1;
-    let y= random(11 - length)-1;
-    
-    // horizontal placing
-    for(i=0; i < length; i++){
-    removeReplace(x,(y+i), ('S' + length));
-    }
-    }
-    else if (direction === 2) {
-    // generate random vertical start coord (excludes last row)
-    let x= random(11 - length)-1;
-    let y= random(10)-1;
-
-    // vertical placement
-    for(i=0; i < length; i++){
-    removeReplace((x+i),y, 'S'+ length);
-    }
-    };
-//     while (shipTwoCoord === shipOneCoord) {
-//         shipTwoCoord = randomGridCoord();
-//     };
+// Replace Grid Coord with Ship 
+function removeReplace (i, j, ...newVar) {
+    return grid[i].splice(j, 1, newVar);
 };
 
-// Replace Function
-function removeReplace (i, j, ...newVar) {
-    grid[i].splice(j, 1, newVar);
-}
+
+function placeShips (length) {
+    // randomly select direction. 1=horizontal 2=vertical
+    let direction = random(2);
+
+    // HORIZONTAL
+    if (direction === 1) {
+    
+    checkOverlapH(length);
+   
+    // horizontal placing
+    for(i=0; i < length; i++){
+        shipArray.push(removeReplace(x,(y+i), ('SH')));
+    }}
+
+    // VERTICAL
+    else if (direction === 2) {
+
+    checkOverlapV(length);
+
+    // vertical placement
+    for(let i=0; i < length; i++) {
+        shipArray.push(removeReplace((x+i),y, ('SH')));
+        }}
+};
 
 // Guess response generator
 function checkGuess (guess) {
@@ -100,12 +133,16 @@ function checkGuess (guess) {
         console.log('HIT! You have sunk a battleship. 1 ship remaining')
     }
     else console.log('You have missed!');
-}
+};
 
 // TEST
 
 buildGrid(10);
 
+placeShips(2);
+placeShips(3);
+placeShips(3);
+placeShips(4);
 placeShips(5);
 
 console.log(`
@@ -121,8 +158,7 @@ console.log(`
     ${grid[9]}
     `
     );
-
-
+console.log('Ship Locations:' + shipArray);
 
 // initiate game function
 // function startGame () {
