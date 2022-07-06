@@ -2,9 +2,9 @@
 
 var rs = require('readline-sync');
 
-const grid = [];
+let grid = [];
 
-const shipArray = [];
+let shipArray = [];
 
 let shipOneCoord = '';
 let shipTwoCoord = '';
@@ -14,11 +14,19 @@ let guess='';
 let x ='';
 let y ='';
 
+let X= 0;
+let Y= 0;
+
 let playAgain = false;
 
-// guessType = nestedArray;
 
 let guessArray=[];
+
+let displayGrid = [];
+
+let guessType = displayGrid;
+
+
 
 // Grid building function
 function buildGrid (size) {
@@ -26,6 +34,14 @@ function buildGrid (size) {
         grid[i] = new Array(size);
         for (j=0; j<size; j++) {
             grid[i][j]= numToABC(i)+ (j+1);
+        }
+    }
+}
+function buildDisplayGrid (size) {
+    for (i=0; i<size; i++) {
+        displayGrid[i] = new Array(size);
+        for (j=0; j<size; j++) {
+            displayGrid[i][j]= numToABC(i)+ (j+1);
         }
     }
 }
@@ -51,26 +67,22 @@ function random(maxNum) {
 //     return (i,j);
 // }
 
-
+// generate starting coordinates until no overlap HORIZONTAL
 function checkOverlapH (length) {
     genHoriCoord(length);
     for(let i=0; i < length; i++) {
         let yi= y+i;
         if (grid[x][yi].includes('SH')) {
-            console.log('x=' + x);
-            console.log('y=' + y);
             checkOverlapH(length);
     }
 }};
 
-
+// generate starting coordinates until no overlap VERTICAL
 function checkOverlapV (length) {
     genVertCoord(length);
     for(let i=0; i < length; i++) {
         let xi= x+i;
         if (grid[(xi)][y].includes('SH')) {
-            console.log('x=' + x);
-            console.log('y=' + y);
             checkOverlapV(length);
     }
 }};
@@ -117,33 +129,53 @@ function placeShips (length) {
         shipArray.push(removeReplace((x+i),y, ('SH')));
         }}
 };
+// Converts guess into grid coordinates
+function guessCoord(string) {
+
+    let x = string.slice(0,1);
+    let y = string.slice(1,3);
+
+     X = (x.charCodeAt(0) - 65);
+     Y = (Number(y)-1);
+
+    return(X,Y);
+}
 
 // Guess response generator
 function checkGuess (guess) {
-    if (guessArray.includes(shipOneCoord)  && guess === shipTwoCoord) {
-        console.log('You have destroyed all battleships!')
-    }
-    else if (guessArray.includes(shipTwoCoord)  && guess === shipOneCoord) {
+    guessCoord(guess);
+
+    if (guessArray.includes(shipArray)) {
         console.log('You have destroyed all battleships!')
     }
     else if (guessArray.includes(guess) ) {
         console.log('You have already picked this location. Miss!')
     }
-    else if (guess === shipOneCoord || guess === shipTwoCoord) {
-        console.log('HIT! You have sunk a battleship. 1 ship remaining')
+    else if (grid[X][Y].includes('SH')) {
+        displayGrid[X].splice(Y,1,'X ');
+        console.log('HIT!');
     }
-    else console.log('You have missed!');
+    else {
+        displayGrid[X].splice(Y,1,'O ');
+        console.log('You have missed!');
+    }
 };
 
-// TEST
+
+// // initiate game function
+function startGame () {
+rs.question('Press any key to start the game.');
 
 buildGrid(10);
+
+buildDisplayGrid(10);
 
 placeShips(2);
 placeShips(3);
 placeShips(3);
 placeShips(4);
 placeShips(5);
+
 
 console.log(`
     ${grid[0]}
@@ -158,40 +190,61 @@ console.log(`
     ${grid[9]}
     `
     );
-console.log('Ship Locations:' + shipArray);
 
-// initiate game function
-// function startGame () {
-// rs.question('Press any key to start the game.');
+    console.log(`
+    ${displayGrid[0]}
+    ${displayGrid[1]}
+    ${displayGrid[2]}
+    ${displayGrid[3]}
+    ${displayGrid[4]}
+    ${displayGrid[5]}
+    ${displayGrid[6]}
+    ${displayGrid[7]}
+    ${displayGrid[8]}
+    ${displayGrid[9]}
+    `
+    );
 
-// placeShips();
+ console.log(shipArray);
 
-// console.log(arrayA);
-// console.log(arrayB);
-// console.log(arrayC);
+ 
 
-// while (!(guessArray.includes(shipOneCoord) && guessArray.includes(shipTwoCoord))) {
+while (!(guessArray.includes(shipArray))) {
 
-// guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: guessType,
-//         limitMessage:'That is not a valid location. Please try again.'});
+guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: guessType,
+        limitMessage:'That is not a valid location. Please try again.'});
 
-// // Check guess for hit and log message 
-// checkGuess(guess);
-// // Log Guess
-// guessArray.push(guess);
-// // Show Guess History
-// console.log('Your Strikes:' + guessArray);
+// Check guess for hit and log message 
+checkGuess(guess);
+// Log Guess
+guessArray.push(guess);
+// Show Guess History
+console.log('Your Strikes:' + guessArray);
 
-// }
-// // Ending Question
-// playAgain = rs.keyInYN('Would you like to play again? Y/N')
+console.log(`
+    ${displayGrid[0]}
+    ${displayGrid[1]}
+    ${displayGrid[2]}
+    ${displayGrid[3]}
+    ${displayGrid[4]}
+    ${displayGrid[5]}
+    ${displayGrid[6]}
+    ${displayGrid[7]}
+    ${displayGrid[8]}
+    ${displayGrid[9]}
+    `
+    );
 
-// if (playAgain) {
-//     // Clear guessArray
-//     guessArray=[];
-//     // Restart
-//     startGame()};
-// }
+}
+// Ending Question
+playAgain = rs.keyInYN('Would you like to play again? Y/N')
 
-// // initiate game
-// startGame();
+if (playAgain) {
+    // Clear guessArray
+    guessArray=[];
+    shipArray=[];
+    // Restart
+    startGame()};
+}
+// initiate game
+startGame();
