@@ -2,6 +2,8 @@
 
 var rs = require('readline-sync');
 
+rs.setDefaultOptions({caseSensitive: true});
+
 let grid = [];
 
 let displayGrid = [];
@@ -16,6 +18,12 @@ let hitArray = [];
 
 let guess='';
 
+let count = 0;
+let countdown = 5;
+
+let missCount = 0;
+let hitCount = 0;
+
 let X= 0;
 let Y= 0;
 
@@ -24,7 +32,7 @@ let y ='';
 
 let playAgain = false;
 
-let guessType = ''
+let guessType = '';
 
 // let ships = ['S1', 'S2' ,'S3', 'S4', 'S5']
 
@@ -83,11 +91,9 @@ function checkOverlapH (length) {
     for(let i=0; i < length; i++) {
         let yi= y+i;
         let shipLocale = (grid[x][yi]);
-        console.log(shipLocale);
         if (checkForShips(shipLocale)) {
             checkOverlapH(length);
     }
-        else {console.log ('No overlap detected')}
 }};
 
 // generate starting coordinates until no overlap VERTICAL
@@ -96,33 +102,24 @@ function checkOverlapV (length) {
     for(let i=0; i < length; i++) {
         let xi= x+i;
         let shipLocale = (grid[(xi)][y]);
-        console.log(shipLocale);
         if (checkForShips(shipLocale)) {
-            console.log('Overlap detected; regenerating new coord');
             checkOverlapV(length);
     }
-        else {console.log ('No overlap detected')}
 }};
 
 // Checks if value is a Ship 
 function checkForShips (value) {
     if (value.includes('S1') ) {
-        console.log('s1')
         return true}  
     else if (value.includes('S2')) {
-        console.log('s2')
         return true}  
     else if (value.includes('S3')) {
-        console.log('s3')
         return true}  
     else if (value.includes('S4')) {
-        console.log('s4')
         return true}  
     else if (value.includes('S5')) {
-        console.log('s5')
         return true}  
     else {
-        console.log('false')
         return false}
 }
 // generate random starting coord -- VERTICAL
@@ -173,15 +170,10 @@ function guessCoord(string) {
     let x = string.slice(0,1);
     let y = string.slice(1,3);
 
-    if (x.charCodeAt(0) > 90) {
-     X = (x.charCodeAt(0) - 97);
-     Y = (Number(y)-1);
-
-    }
-    else {
+   
      X = (x.charCodeAt(0) - 65);
      Y = (Number(y)-1);
-    }
+    
     return(X,Y);
 }
 
@@ -190,24 +182,77 @@ function guessCoord(string) {
 function checkGuess (guess) {
     guessCoord(guess);
 
-    if (guessArray.includes((shipArray))) {
-        console.log('You have destroyed all battleships!')
-    }
-    else if (guessArray.includes(guess) ) {
-        console.log('You have already picked this location. Miss!')
+    if (guessArray.includes(guess) ) {
+        console.log(                '\n   You have already picked this location. Miss!')
     }
     else if (checkForShips(grid[X][Y])) {
         hitArray.push(displayGrid[X].splice(Y,1,'X '));
-        console.log('HIT!');
+        console.log(`
+                    ${guess}:...HIT!`);
+        hitCounter(1);
     }
-    else if (!checkForShips(grid[X][Y])) {
+    else {
         displayGrid[X].splice(Y,1,'O ');
-        console.log('You have missed!');
+        console.log(`
+                   ${guess}:...MISS`);
+        missCounter(1);
     }
-    else {console.log('Invalid')}
+    
 };
 
+function checkSunk (guess) {
 
+    if (guessArray.includes(shipArray[0][0] && shipArray[1][0])) {
+        console.log('              **DESTROYER SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (guessArray.includes(shipArray[2][0] && shipArray[3][0] && shipArray[4][0])) {
+        console.log('              **SUBMARINE SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (guessArray.includes(shipArray[5][0] && shipArray[6][0] && shipArray[7][0])) {
+        console.log('              **CRUISER SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (guessArray.includes(shipArray[8][0] && shipArray[9][0] && shipArray[10][0] && shipArray[11][0])) {
+        console.log('               **BATTLESHIP SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (guessArray.includes(shipArray[12][0] && shipArray[13][0] && shipArray[14][0] && shipArray[15][0] && shipArray [16][0])) {
+        console.log('               **CARRIER SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+};
+
+// COUNTERS
+
+ function shipCount(num) {
+    count = count + num;
+    return count;
+ }
+ function shipCountdown(num) {
+    countdown = countdown - num;
+    return countdown;
+ }
+
+ function missCounter(num){
+    missCount = missCount + num;
+    return missCount;
+ }
+ function hitCounter(num){
+    hitCount = hitCount + num;
+    return hitCount;
+ }
 // // initiate game function
 function startGame () {
 
@@ -245,26 +290,12 @@ placeShips(5);
     ${displayGrid[9]}
     `
     );
-//  grid
-    console.log(`
-    ${grid[0]}
-    ${grid[1]}
-    ${grid[2]}
-    ${grid[3]}
-    ${grid[4]}
-    ${grid[5]}
-    ${grid[6]}
-    ${grid[7]}
-    ${grid[8]}
-    ${grid[9]}
-    `
-    );
 
 // Guess Prompt Loop
 
-while (shipArray !== hitArray) {
+while (count < 5) {
 
-guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: guessType,
+guess = rs.question( '\n Enter a location to strike. ie "A2" - - - >', {limit: guessType,
         limitMessage:'That is not a valid location. Please try again.'});
 
         // Check guess for hit and log message 
@@ -273,8 +304,7 @@ guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: gues
         // Log Guess
         guessArray.push(guess);
 
-        // Show Guess History
-        console.log('Your Strikes:' + guessArray);
+        checkSunk(guess);
 
         // Show Updated Display Grid
         console.log(`
@@ -290,18 +320,30 @@ guess = rs.question( '\n Enter a location to strike. ie "A2"...\n', {limit: gues
         ${displayGrid[9]}
         `
         );
+        console.log('Ships Sunk: ' + count);
+        console.log('Ships Remaining: ' + countdown);
 
-        console.log(shipArray);
-        console.log(hitArray);
+        console.log('\nHit Count: ' + hitCount);
+        console.log('Miss Count: ' + missCount);
+
+
 };
     // Ending Question
-if (shipArray === hitArray) {
-playAgain = rs.keyInYN('Would you like to play again? Y/N')
+if (count = 5) {
+
+console.log('CONGRATULATIONS! You sunk all of the enemy ships!');
+
+playAgain = rs.keyInYN('\n Would you like to play again? Y/N')
 
 if (playAgain) {
-    // Clear guessArray
+
+    // Clear DATA
+
     guessArray=[];
     shipArray=[];
+    count=0;
+    countdown=5;
+
     // Restart
     startGame()
 };
