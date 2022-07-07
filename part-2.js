@@ -26,6 +26,8 @@ let playAgain = false;
 
 let guessType = ''
 
+// let ships = ['S1', 'S2' ,'S3', 'S4', 'S5']
+
 // [ 'A1','A2','A3','A4','A5','A6','A7','A8','A9','A10',
 //     'B1','B2','B3','B4','B5','B6','B7','B8','B9','B10',
 //     'C1','C2','C3','C4','C5','C6','C7','C8','C9','C10',
@@ -80,9 +82,12 @@ function checkOverlapH (length) {
     genHoriCoord(length);
     for(let i=0; i < length; i++) {
         let yi= y+i;
-        if (grid[x][yi].includes('SH')) {
+        let shipLocale = (grid[x][yi]);
+        console.log(shipLocale);
+        if (checkForShips(shipLocale)) {
             checkOverlapH(length);
     }
+        else {console.log ('No overlap detected')}
 }};
 
 // generate starting coordinates until no overlap VERTICAL
@@ -90,11 +95,36 @@ function checkOverlapV (length) {
     genVertCoord(length);
     for(let i=0; i < length; i++) {
         let xi= x+i;
-        if (grid[(xi)][y].includes('SH')) {
+        let shipLocale = (grid[(xi)][y]);
+        console.log(shipLocale);
+        if (checkForShips(shipLocale)) {
+            console.log('Overlap detected; regenerating new coord');
             checkOverlapV(length);
     }
+        else {console.log ('No overlap detected')}
 }};
 
+// Checks if value is a Ship 
+function checkForShips (value) {
+    if (value.includes('S1') ) {
+        console.log('s1')
+        return true}  
+    else if (value.includes('S2')) {
+        console.log('s2')
+        return true}  
+    else if (value.includes('S3')) {
+        console.log('s3')
+        return true}  
+    else if (value.includes('S4')) {
+        console.log('s4')
+        return true}  
+    else if (value.includes('S5')) {
+        console.log('s5')
+        return true}  
+    else {
+        console.log('false')
+        return false}
+}
 // generate random starting coord -- VERTICAL
 function genVertCoord (length) {
     x= random(11 - length)-1;
@@ -124,7 +154,7 @@ function placeShips (length) {
    
     // horizontal placing
     for(i=0; i < length; i++){
-        shipArray.push(removeReplace(x,(y+i), ('SH')));
+        shipArray.push(removeReplace(x,(y+i), ('S'+ length)));
     }}
 
     // VERTICAL
@@ -134,7 +164,7 @@ function placeShips (length) {
 
     // vertical placement
     for(let i=0; i < length; i++) {
-        shipArray.push(removeReplace((x+i),y, ('SH')));
+        shipArray.push(removeReplace((x+i),y, ('S'+ length)));
         }}
 };
 // Converts guess into grid coordinates
@@ -166,11 +196,11 @@ function checkGuess (guess) {
     else if (guessArray.includes(guess) ) {
         console.log('You have already picked this location. Miss!')
     }
-    else if (grid[X][Y].includes('SH')) {
+    else if (checkForShips(grid[X][Y])) {
         hitArray.push(displayGrid[X].splice(Y,1,'X '));
         console.log('HIT!');
     }
-    else if (!grid[X][Y].includes('SH')){
+    else if (!checkForShips(grid[X][Y])) {
         displayGrid[X].splice(Y,1,'O ');
         console.log('You have missed!');
     }
@@ -213,6 +243,20 @@ placeShips(5);
     ${displayGrid[7]}
     ${displayGrid[8]}
     ${displayGrid[9]}
+    `
+    );
+//  grid
+    console.log(`
+    ${grid[0]}
+    ${grid[1]}
+    ${grid[2]}
+    ${grid[3]}
+    ${grid[4]}
+    ${grid[5]}
+    ${grid[6]}
+    ${grid[7]}
+    ${grid[8]}
+    ${grid[9]}
     `
     );
 
