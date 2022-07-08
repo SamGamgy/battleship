@@ -1,128 +1,395 @@
-let a1 = '     ';
-let b1 = '     ';
-let c1 = '     ';
-let d1 = '     ';
-let e1 = '     ';
-let f1 = '     ';
-let g1 = '     ';
-let h1 = '     ';
-let i1 = '     ';
-let j1 = '     ';
-let a2 = '     ';
-let b2 = '     ';
-let c2 = '     ';
-let d2 = '     ';
-let e2 = '     ';
-let f2 = '     ';
-let g2 = '     ';
-let h2 = '     ';
-let i2 = '     ';
-let j2 = '     ';
-let a3 = '     ';
-let b3 = '     ';
-let c3 = '     ';
-let d3 = '     ';
-let e3 = '     ';
-let f3 = '     ';
-let g3 = '     ';
-let h3 = '     ';
-let i3 = '     ';
-let j3 = '     ';
-let a4 = '     ';
-let b4 = '     ';
-let c4 = '     ';
-let d4 = '     ';
-let e4 = '     ';
-let f4 = '     ';
-let g4 = '     ';
-let h4 = '     ';
-let i4 = '     ';
-let j4 = '     ';
-let a5 = '     ';
-let b5 = '     ';
-let c5 = '     ';
-let d5 = '     ';
-let e5 = '     ';
-let f5 = '     ';
-let g5 = '     ';
-let h5 = '     ';
-let i5 = '     ';
-let j5 = '     ';
-let a6 = '     ';
-let b6 = '     ';
-let c6 = '     ';
-let d6 = '     ';
-let e6 = '     ';
-let f6 = '     ';
-let g6 = '     ';
-let h6 = '     ';
-let i6 = '     ';
-let j6 = '     ';
-let a7 = '     ';
-let b7 = '     ';
-let c7 = '     ';
-let d7 = '     ';
-let e7 = '     ';
-let f7 = '     ';
-let g7 = '     ';
-let h7 = '     ';
-let i7 = '     ';
-let j7 = '     ';
-let a8 = '     ';
-let b8 = '     ';
-let c8 = '     ';
-let d8 = '     ';
-let e8 = '     ';
-let f8 = '     ';
-let g8 = '     ';
-let h8 = '     ';
-let i8 = '     ';
-let j8 = '     ';
-let a9 = '     ';
-let b9 = '     ';
-let c9 = '     ';
-let d9 = '     ';
-let e9 = '     ';
-let f9 = '     ';
-let g9 = '     ';
-let h9 = '     ';
-let i9 = '     ';
-let j9 = '     ';
-let a10 = '     ';
-let b10 = '     ';
-let c10 = '     ';
-let d10 = '     ';
-let e10 = '     ';
-let f10 = '     ';
-let g10 = '     ';
-let h10 = '     ';
-let i10 = '     ';
-let j10 = '     ';
+ // // Variables
+
+var rs = require('readline-sync');
+
+rs.setDefaultOptions({caseSensitive: true});
+
+let grid = [];
+
+let displayGrid = [];
+
+let limitGrid = [];
+
+let shipArray = [];
+
+let guessArray=[];
+
+let hitArray = [];
+
+let guess='';
+
+let count = 0;
+let countdown = 5;
+
+let missCount = 0;
+let hitCount = 0;
+
+let X= 0;
+let Y= 0;
+
+let x ='';
+let y ='';
+
+let playAgain = false;
+
+let guessType = '';
+
+// Grid building function
+function buildGrid (size) {
+    for (i=0; i<size; i++) {
+        grid[i] = new Array(size);
+        for (j=0; j<size; j++) {
+            grid[i][j]= numToABC(i)+ (j+1);
+        }
+    }
+}
+function buildDisplayGrid (size) {
+    for (i=0; i<size; i++) {
+        displayGrid[i] = new Array(size);
+        for (j=0; j<size; j++) {
+            displayGrid[i][j]= '     ';
+        }
+    }
+}
+function buildLimitGrid (size) {
+    for (i=0; i<size; i++) {
+        limitGrid[i] = new Array(size);
+        for (j=0; j<size; j++) {
+            limitGrid[i][j]= numToABC(i)+ (j+1);
+        }
+    }
+}
+
+// Convert Num to Alphabet
+function numToABC (num) {
+    let char= String.fromCharCode(num + 65);
+    return char;
+}
+
+// generates random whole number between 1 and maxNum
+function random(maxNum) {
+    return Math.floor(Math.random()* maxNum + 1);
+}
+
+// generate starting coordinates until no overlap HORIZONTAL
+function checkOverlapH (length) {
+    genHoriCoord(length);
+    for(let i=0; i < length; i++) {
+        let yi= y+i;
+        let shipLocale = (grid[x][yi]);
+        if (checkForShips(shipLocale)) {
+            checkOverlapH(length);
+    }
+}};
+
+// generate starting coordinates until no overlap VERTICAL
+function checkOverlapV (length) {
+    genVertCoord(length);
+    for(let i=0; i < length; i++) {
+        let xi= x+i;
+        let shipLocale = (grid[(xi)][y]);
+        if (checkForShips(shipLocale)) {
+            checkOverlapV(length);
+    }
+}};
+
+// Checks if value is a Ship 
+function checkForShips (value) {
+    if (value.includes('S1') ) {
+        return true}  
+    else if (value.includes('S2')) {
+        return true}  
+    else if (value.includes('S3')) {
+        return true}  
+    else if (value.includes('S4')) {
+        return true}  
+    else if (value.includes('S5')) {
+        return true}  
+    else {
+        return false}
+}
+// Checks for Hit or Miss
+function checkForHitMiss (value) {
+    if (value.includes('X') ) {
+        return true}  
+    else if (value.includes('O')) {
+        return true}   
+    else {
+        return false}
+}
+// generate random starting coord -- VERTICAL
+function genVertCoord (length) {
+    x= random(11 - length)-1;
+    y= random(10)-1;
+}
+
+// generate random starting coord -- HORIZONTAL
+function genHoriCoord (length) {
+    x= random(10)-1;
+    y= random(11 - length)-1;
+}
+
+// Replace Grid Coord with Ship 
+function removeReplace (i, j, ...newVar) {
+    return grid[i].splice(j, 1, newVar);
+};
+
+
+function placeShips (length) {
+    // randomly select direction. 1=horizontal 2=vertical
+    let direction = random(2);
+
+    // HORIZONTAL
+    if (direction === 1) {
+    
+    checkOverlapH(length);
+   
+    // horizontal placing
+    for(i=0; i < length; i++){
+        shipArray.push(removeReplace(x,(y+i), ('S'+ length)));
+    }}
+
+    // VERTICAL
+    else if (direction === 2) {
+
+    checkOverlapV(length);
+
+    // vertical placement
+    for(let i=0; i < length; i++) {
+        shipArray.push(removeReplace((x+i),y, ('S'+ length)));
+        }}
+};
+// Converts guess into grid coordinates
+function guessCoord(string) {
+
+    let x = string.slice(0,1);
+    let y = string.slice(1,3);
+
+   
+     X = (x.charCodeAt(0) - 65);
+     Y = (Number(y)-1);
+    
+    return(X,Y);
+}
+
+// Guess response generator
+
+function checkGuess (guess) {
+    guessCoord(guess);
+
+    if (checkForHitMiss(displayGrid[X][Y]) ) {
+        console.log(                '\n                  You have already picked this location. Try Again')
+    }
+    else if (checkForShips(grid[X][Y])) {
+        hitArray.push(displayGrid[X].splice(Y,1,'  X  '));
+        console.log(`
+                              Xx--${guess}...HIT--xX
+                                `);
+        hitCounter(1);
+    }
+    else {
+        displayGrid[X].splice(Y,1,'  O  ');
+        console.log(`
+                              ----${guess}...MISS----
+                            `);
+        missCounter(1);
+    }
+    
+};
+
+function everyIncludes (values, array) {
+    return values.every(value => {
+        return array.includes(value);
+    })
+}
+
+
+function checkSunk (guess) {
+
+    let destroyer = [shipArray[0][0], shipArray[1][0]];
+    let submarine = [shipArray[2][0] , shipArray[3][0] , shipArray[4][0]];
+    let cruiser = [shipArray[5][0] , shipArray[6][0] , shipArray[7][0]];
+    let battleship = [shipArray[8][0] , shipArray[9][0] , shipArray[10][0] , shipArray[11][0]];
+    let carrier = [shipArray[12][0] , shipArray[13][0] , shipArray[14][0] , shipArray[15][0] , shipArray [16][0]];
+
+    if (everyIncludes(destroyer, guessArray)) {
+        console.log('                                 **DESTROYER SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (everyIncludes(submarine, guessArray)) {
+        console.log('                                **SUBMARINE SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (everyIncludes(cruiser, guessArray)) {
+        console.log('                                 **CRUISER SUNK**')
+        guessArray=[];      
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (everyIncludes(battleship, guessArray)) {
+        console.log('                                  **BATTLESHIP SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+    if (everyIncludes(carrier, guessArray)) {
+        console.log('                                  **CARRIER SUNK**')
+        guessArray=[];
+        shipCount(1);
+        shipCountdown(1);
+    }
+};
+
+// COUNTERS
+
+ function shipCount(num) {
+    count = count + num;
+    return count;
+ }
+ function shipCountdown(num) {
+    countdown = countdown - num;
+    return countdown;
+ }
+
+ function missCounter(num){
+    missCount = missCount + num;
+    return missCount;
+ }
+ function hitCounter(num){
+    hitCount = hitCount + num;
+    return hitCount;
+ }
+// // initiate game function
+function startGame () {
+
+rs.question('\n                      Press any key to start the game.');
+
+// build grids
+buildGrid(10);
+
+buildDisplayGrid(10);
+
+buildLimitGrid(10);
+
+// setup limit
+guessType = limitGrid;
+
+// place ships
+placeShips(2);
+placeShips(3);
+placeShips(3);
+placeShips(4);
+placeShips(5);
+
+
+
+console.log(
+    `      
+                                Welcome to
+                                BATTLESHIP 
+    
+            1     2     3     4     5     6     7     8     9     10  
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      A  |${displayGrid[0][0]}|${displayGrid[0][1]}|${displayGrid[0][2]}|${displayGrid[0][3]}|${displayGrid[0][4]}|${displayGrid[0][5]}|${displayGrid[0][6]}|${displayGrid[0][7]}|${displayGrid[0][8]}|${displayGrid[0][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      B  |${displayGrid[1][0]}|${displayGrid[1][1]}|${displayGrid[1][2]}|${displayGrid[1][3]}|${displayGrid[1][4]}|${displayGrid[1][5]}|${displayGrid[1][6]}|${displayGrid[1][7]}|${displayGrid[1][8]}|${displayGrid[1][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      C  |${displayGrid[2][0]}|${displayGrid[2][1]}|${displayGrid[2][2]}|${displayGrid[2][3]}|${displayGrid[2][4]}|${displayGrid[2][5]}|${displayGrid[2][6]}|${displayGrid[2][7]}|${displayGrid[2][8]}|${displayGrid[2][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      D  |${displayGrid[3][0]}|${displayGrid[3][1]}|${displayGrid[3][2]}|${displayGrid[3][3]}|${displayGrid[3][4]}|${displayGrid[3][5]}|${displayGrid[3][6]}|${displayGrid[3][7]}|${displayGrid[3][8]}|${displayGrid[3][9]}|      
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      E  |${displayGrid[4][0]}|${displayGrid[4][1]}|${displayGrid[4][2]}|${displayGrid[4][3]}|${displayGrid[4][4]}|${displayGrid[4][5]}|${displayGrid[4][6]}|${displayGrid[4][7]}|${displayGrid[4][8]}|${displayGrid[4][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      F  |${displayGrid[5][0]}|${displayGrid[5][1]}|${displayGrid[5][2]}|${displayGrid[5][3]}|${displayGrid[5][4]}|${displayGrid[5][5]}|${displayGrid[5][6]}|${displayGrid[5][7]}|${displayGrid[5][8]}|${displayGrid[5][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      G  |${displayGrid[6][0]}|${displayGrid[6][1]}|${displayGrid[6][2]}|${displayGrid[6][3]}|${displayGrid[6][4]}|${displayGrid[6][5]}|${displayGrid[6][6]}|${displayGrid[6][7]}|${displayGrid[6][8]}|${displayGrid[6][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      H  |${displayGrid[7][0]}|${displayGrid[7][1]}|${displayGrid[7][2]}|${displayGrid[7][3]}|${displayGrid[7][4]}|${displayGrid[7][5]}|${displayGrid[7][6]}|${displayGrid[7][7]}|${displayGrid[7][8]}|${displayGrid[7][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      I  |${displayGrid[8][0]}|${displayGrid[8][1]}|${displayGrid[8][2]}|${displayGrid[8][3]}|${displayGrid[8][4]}|${displayGrid[8][5]}|${displayGrid[8][6]}|${displayGrid[8][7]}|${displayGrid[8][8]}|${displayGrid[8][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      J  |${displayGrid[9][0]}|${displayGrid[9][1]}|${displayGrid[9][2]}|${displayGrid[9][3]}|${displayGrid[9][4]}|${displayGrid[9][5]}|${displayGrid[9][6]}|${displayGrid[9][7]}|${displayGrid[9][8]}|${displayGrid[9][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+       `      );
 
     
-    console.log(
-`                           BATTLESHIP 
+// Guess Prompt Loop
 
-        1     2     3     4     5     6     7     8     9     10  
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  A  |${a1}|${a2}|${a3}|${a4}|${a5}|${a6}|${a7}|${a8}|${a9}|${a10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  B  |${b1}|${b2}|${b3}|${b4}|${b5}|${b6}|${b7}|${b8}|${b9}|${b10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  C  |${c1}|${c2}|${c3}|${c4}|${c5}|${c6}|${c7}|${c8}|${c9}|${c10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  D  |${d1}|${d2}|${d3}|${d4}|${d5}|${d6}|${d7}|${d8}|${d9}|${d10}|      
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  E  |${e1}|${e2}|${e3}|${e4}|${e5}|${e6}|${e7}|${e8}|${e9}|${e10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  F  |${f1}|${f2}|${f3}|${f4}|${f5}|${f6}|${f7}|${f8}|${f9}|${f10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  G  |${g1}|${g2}|${g3}|${g4}|${g5}|${g6}|${g7}|${g8}|${g9}|${g10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  H  |${h1}|${h2}|${h3}|${h4}|${h5}|${h6}|${h7}|${h8}|${h9}|${h10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  I  |${i1}|${i2}|${i3}|${i4}|${i5}|${i6}|${i7}|${i8}|${i9}|${i10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-  J  |${j1}|${j2}|${j3}|${j4}|${j5}|${j6}|${j7}|${j8}|${j9}|${j10}|       
-     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-   `      );
+while (count < 5) {
+
+guess = rs.question( '\n         Enter a location to strike. ie "A2" - - - >   ', {limit: guessType,
+        limitMessage:'                That is not a valid location. Please try again.'});
+
+        // Check guess for hit and log message 
+        checkGuess(guess);
+
+        // Log Guess
+        guessArray.push(guess);
+
+        // Check for sunk ships
+        checkSunk(guess);
+
+
+        // GUI
+        console.log(
+            `                          
+           
+            1     2     3     4     5     6     7     8     9     10  
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      A  |${displayGrid[0][0]}|${displayGrid[0][1]}|${displayGrid[0][2]}|${displayGrid[0][3]}|${displayGrid[0][4]}|${displayGrid[0][5]}|${displayGrid[0][6]}|${displayGrid[0][7]}|${displayGrid[0][8]}|${displayGrid[0][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      B  |${displayGrid[1][0]}|${displayGrid[1][1]}|${displayGrid[1][2]}|${displayGrid[1][3]}|${displayGrid[1][4]}|${displayGrid[1][5]}|${displayGrid[1][6]}|${displayGrid[1][7]}|${displayGrid[1][8]}|${displayGrid[1][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      C  |${displayGrid[2][0]}|${displayGrid[2][1]}|${displayGrid[2][2]}|${displayGrid[2][3]}|${displayGrid[2][4]}|${displayGrid[2][5]}|${displayGrid[2][6]}|${displayGrid[2][7]}|${displayGrid[2][8]}|${displayGrid[2][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      D  |${displayGrid[3][0]}|${displayGrid[3][1]}|${displayGrid[3][2]}|${displayGrid[3][3]}|${displayGrid[3][4]}|${displayGrid[3][5]}|${displayGrid[3][6]}|${displayGrid[3][7]}|${displayGrid[3][8]}|${displayGrid[3][9]}|      
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      E  |${displayGrid[4][0]}|${displayGrid[4][1]}|${displayGrid[4][2]}|${displayGrid[4][3]}|${displayGrid[4][4]}|${displayGrid[4][5]}|${displayGrid[4][6]}|${displayGrid[4][7]}|${displayGrid[4][8]}|${displayGrid[4][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      F  |${displayGrid[5][0]}|${displayGrid[5][1]}|${displayGrid[5][2]}|${displayGrid[5][3]}|${displayGrid[5][4]}|${displayGrid[5][5]}|${displayGrid[5][6]}|${displayGrid[5][7]}|${displayGrid[5][8]}|${displayGrid[5][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      G  |${displayGrid[6][0]}|${displayGrid[6][1]}|${displayGrid[6][2]}|${displayGrid[6][3]}|${displayGrid[6][4]}|${displayGrid[6][5]}|${displayGrid[6][6]}|${displayGrid[6][7]}|${displayGrid[6][8]}|${displayGrid[6][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      H  |${displayGrid[7][0]}|${displayGrid[7][1]}|${displayGrid[7][2]}|${displayGrid[7][3]}|${displayGrid[7][4]}|${displayGrid[7][5]}|${displayGrid[7][6]}|${displayGrid[7][7]}|${displayGrid[7][8]}|${displayGrid[7][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      I  |${displayGrid[8][0]}|${displayGrid[8][1]}|${displayGrid[8][2]}|${displayGrid[8][3]}|${displayGrid[8][4]}|${displayGrid[8][5]}|${displayGrid[8][6]}|${displayGrid[8][7]}|${displayGrid[8][8]}|${displayGrid[8][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+      J  |${displayGrid[9][0]}|${displayGrid[9][1]}|${displayGrid[9][2]}|${displayGrid[9][3]}|${displayGrid[9][4]}|${displayGrid[9][5]}|${displayGrid[9][6]}|${displayGrid[9][7]}|${displayGrid[9][8]}|${displayGrid[9][9]}|       
+         |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+       `      );
+
+        console.log('       Ships Sunk: ' + count);
+        console.log('       Ships Remaining: ' + countdown);
+
+        console.log('\n       Hit Count: ' + hitCount);
+        console.log('       Miss Count: ' + missCount);
+
+};
+    // Ending Question
+if (count = 5) {
+
+console.log('           CONGRATULATIONS! You sunk all of the enemy ships!');
+
+playAgain = rs.keyInYN('\n          Would you like to play again? Y/N')
+
+if (playAgain) {
+
+    // Clear DATA
+
+    guessArray=[];
+    shipArray=[];
+    count=0;
+    countdown=5;
+
+    // Restart
+    startGame()
+};
+}
+}
+
+// initiate game
+startGame();   
