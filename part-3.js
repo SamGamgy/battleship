@@ -1,37 +1,128 @@
-// // Variables
+let a1 = '     ';
+let b1 = '     ';
+let c1 = '     ';
+let d1 = '     ';
+let e1 = '     ';
+let f1 = '     ';
+let g1 = '     ';
+let h1 = '     ';
+let i1 = '     ';
+let j1 = '     ';
+let a2 = '     ';
+let b2 = '     ';
+let c2 = '     ';
+let d2 = '     ';
+let e2 = '     ';
+let f2 = '     ';
+let g2 = '     ';
+let h2 = '     ';
+let i2 = '     ';
+let j2 = '     ';
+let a3 = '     ';
+let b3 = '     ';
+let c3 = '     ';
+let d3 = '     ';
+let e3 = '     ';
+let f3 = '     ';
+let g3 = '     ';
+let h3 = '     ';
+let i3 = '     ';
+let j3 = '     ';
+let a4 = '     ';
+let b4 = '     ';
+let c4 = '     ';
+let d4 = '     ';
+let e4 = '     ';
+let f4 = '     ';
+let g4 = '     ';
+let h4 = '     ';
+let i4 = '     ';
+let j4 = '     ';
+let a5 = '     ';
+let b5 = '     ';
+let c5 = '     ';
+let d5 = '     ';
+let e5 = '     ';
+let f5 = '     ';
+let g5 = '     ';
+let h5 = '     ';
+let i5 = '     ';
+let j5 = '     ';
+let a6 = '     ';
+let b6 = '     ';
+let c6 = '     ';
+let d6 = '     ';
+let e6 = '     ';
+let f6 = '     ';
+let g6 = '     ';
+let h6 = '     ';
+let i6 = '     ';
+let j6 = '     ';
+let a7 = '     ';
+let b7 = '     ';
+let c7 = '     ';
+let d7 = '     ';
+let e7 = '     ';
+let f7 = '     ';
+let g7 = '     ';
+let h7 = '     ';
+let i7 = '     ';
+let j7 = '     ';
+let a8 = '     ';
+let b8 = '     ';
+let c8 = '     ';
+let d8 = '     ';
+let e8 = '     ';
+let f8 = '     ';
+let g8 = '     ';
+let h8 = '     ';
+let i8 = '     ';
+let j8 = '     ';
+let a9 = '     ';
+let b9 = '     ';
+let c9 = '     ';
+let d9 = '     ';
+let e9 = '     ';
+let f9 = '     ';
+let g9 = '     ';
+let h9 = '     ';
+let i9 = '     ';
+let j9 = '     ';
+let a10 = '     ';
+let b10 = '     ';
+let c10 = '     ';
+let d10 = '     ';
+let e10 = '     ';
+let f10 = '     ';
+let g10 = '     ';
+let h10 = '     ';
+let i10 = '     ';
+let j10 = '     ';
 
-var rs = require('readline-sync');
+    
+    console.log(
+`                           BATTLESHIP 
 
-var operation = '';
-var num1=0;
-var num2=0;
-
-var operationType= [ '+', '-' , '*' , '/' ]
-
-function calc (num1, num2, operation) {
-    if (operation === '+') {
-        return num1 + num2;
-    }
-    if (operation === '-') {
-        return num1 - num2;
-    }
-    if (operation === '*') {
-        return num1 * num2;
-    }
-    if (operation === '/') {
-        return num1 / num2;
-    }
-}
-
-// // // Operation selector
-operation = rs.question('What operation would you like to perform? ', {limit: operationType,
-limitMessage:'That is not a valid operation. Please try again.'});
-
-
-// // // Number Selectors
-num1 = rs.questionInt('Please enter the first number. ');
-
-num2 = rs.questionInt('Please enter the second number. ');
-
-// // // Function  and Result
-console.log('The result is: ' + calc(num1, num2, operation))
+        1     2     3     4     5     6     7     8     9     10  
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  A  |${a1}|${a2}|${a3}|${a4}|${a5}|${a6}|${a7}|${a8}|${a9}|${a10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  B  |${b1}|${b2}|${b3}|${b4}|${b5}|${b6}|${b7}|${b8}|${b9}|${b10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  C  |${c1}|${c2}|${c3}|${c4}|${c5}|${c6}|${c7}|${c8}|${c9}|${c10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  D  |${d1}|${d2}|${d3}|${d4}|${d5}|${d6}|${d7}|${d8}|${d9}|${d10}|      
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  E  |${e1}|${e2}|${e3}|${e4}|${e5}|${e6}|${e7}|${e8}|${e9}|${e10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  F  |${f1}|${f2}|${f3}|${f4}|${f5}|${f6}|${f7}|${f8}|${f9}|${f10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  G  |${g1}|${g2}|${g3}|${g4}|${g5}|${g6}|${g7}|${g8}|${g9}|${g10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  H  |${h1}|${h2}|${h3}|${h4}|${h5}|${h6}|${h7}|${h8}|${h9}|${h10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  I  |${i1}|${i2}|${i3}|${i4}|${i5}|${i6}|${i7}|${i8}|${i9}|${i10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+  J  |${j1}|${j2}|${j3}|${j4}|${j5}|${j6}|${j7}|${j8}|${j9}|${j10}|       
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+   `      );
