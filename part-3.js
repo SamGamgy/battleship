@@ -35,7 +35,7 @@ let playAgain = false;
 let guessType = '';
 
 // Grid building function
-function buildGrid (size) {
+const buildGrid = size => {
     for (i=0; i<size; i++) {
         grid[i] = new Array(size);
         for (j=0; j<size; j++) {
@@ -43,7 +43,7 @@ function buildGrid (size) {
         }
     }
 }
-function buildDisplayGrid (size) {
+const buildDisplayGrid = size => {
     for (i=0; i<size; i++) {
         displayGrid[i] = new Array(size);
         for (j=0; j<size; j++) {
@@ -51,7 +51,7 @@ function buildDisplayGrid (size) {
         }
     }
 }
-function buildLimitGrid (size) {
+const buildLimitGrid = size => {
     for (i=0; i<size; i++) {
         limitGrid[i] = new Array(size);
         for (j=0; j<size; j++) {
@@ -61,18 +61,17 @@ function buildLimitGrid (size) {
 }
 
 // Convert Num to Alphabet
-function numToABC (num) {
+const numToABC = num => {
     let char= String.fromCharCode(num + 65);
     return char;
 }
 
 // generates random whole number between 1 and maxNum
-function random(maxNum) {
-    return Math.floor(Math.random()* maxNum + 1);
-}
+const random = maxNum => Math.floor(Math.random()* maxNum + 1);
+
 
 // generate starting coordinates until no overlap HORIZONTAL
-function checkOverlapH (length) {
+const checkOverlapH = length => {
     genHoriCoord(length);
     for(let i=0; i < length; i++) {
         let yi= y+i;
@@ -83,7 +82,7 @@ function checkOverlapH (length) {
 }};
 
 // generate starting coordinates until no overlap VERTICAL
-function checkOverlapV (length) {
+const checkOverlapV = length => {
     genVertCoord(length);
     for(let i=0; i < length; i++) {
         let xi= x+i;
@@ -94,7 +93,7 @@ function checkOverlapV (length) {
 }};
 
 // Checks if value is a Ship 
-function checkForShips (value) {
+const checkForShips = value => {
     if (value.includes('S1') ) {
         return true}  
     else if (value.includes('S2')) {
@@ -109,7 +108,7 @@ function checkForShips (value) {
         return false}
 }
 // Checks for Hit or Miss
-function checkForHitMiss (value) {
+const checkForHitMiss = value => {
     if (value.includes('X') ) {
         return true}  
     else if (value.includes('O')) {
@@ -118,24 +117,21 @@ function checkForHitMiss (value) {
         return false}
 }
 // generate random starting coord -- VERTICAL
-function genVertCoord (length) {
+const genVertCoord = length => {
     x= random(11 - length)-1;
     y= random(10)-1;
 }
 
 // generate random starting coord -- HORIZONTAL
-function genHoriCoord (length) {
+const genHoriCoord = length => {
     x= random(10)-1;
     y= random(11 - length)-1;
 }
 
 // Replace Grid Coord with Ship 
-function removeReplace (i, j, ...newVar) {
-    return grid[i].splice(j, 1, newVar);
-};
+const removeReplace = (i, j, ...newVar) =>  grid[i].splice(j, 1, newVar);
 
-
-function placeShips (length) {
+const placeShips = length => {
     // randomly select direction. 1=horizontal 2=vertical
     let direction = random(2);
 
@@ -160,7 +156,7 @@ function placeShips (length) {
         }}
 };
 // Converts guess into grid coordinates
-function guessCoord(string) {
+const guessCoord = string => {
 
     let x = string.slice(0,1);
     let y = string.slice(1,3);
@@ -174,7 +170,7 @@ function guessCoord(string) {
 
 // Guess response generator
 
-function checkGuess (guess) {
+const checkGuess = guess => {
     guessCoord(guess);
 
     if (checkForHitMiss(displayGrid[X][Y]) ) {
@@ -197,14 +193,14 @@ function checkGuess (guess) {
     
 };
 
-function everyIncludes (values, array) {
+const everyIncludes = (values, array) => {
     return values.every(value => {
         return array.includes(value);
     })
 }
 
 
-function checkSunk (guess) {
+const checkSunk = guess => {
 
     let destroyer = [shipArray[0][0], shipArray[1][0]];
     let submarine = [shipArray[2][0] , shipArray[3][0] , shipArray[4][0]];
@@ -246,25 +242,25 @@ function checkSunk (guess) {
 
 // COUNTERS
 
- function shipCount(num) {
+ const shipCount = num => {
     count = count + num;
     return count;
  }
- function shipCountdown(num) {
+ const shipCountdown = num => {
     countdown = countdown - num;
     return countdown;
  }
 
- function missCounter(num){
+ const missCounter = num => {
     missCount = missCount + num;
     return missCount;
  }
- function hitCounter(num){
+ const hitCounter = num => {
     hitCount = hitCount + num;
     return hitCount;
  }
 // // initiate game function
-function startGame () {
+const startGame = () => {
 
 rs.question('\n                      Press any key to start the game.');
 
@@ -286,7 +282,7 @@ placeShips(4);
 placeShips(5);
 
 
-
+// Display GUI
 console.log(
     `      
                                 Welcome to
